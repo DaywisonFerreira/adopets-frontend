@@ -1,13 +1,13 @@
-import React, {useContext, useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { Form, Input, Button } from 'antd';
 import { ValidateErrorEntity, Store } from "rc-field-form/lib/interface";
-import {Link} from 'react-router-dom';
-import { SearchOutlined } from '@ant-design/icons';
-import {FiLogIn} from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiLogIn } from 'react-icons/fi';
+import {UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/auth';
 
-import { Container, Content, ImageContent } from './styles';
+import { Container, Content, RegisterContent } from './styles';
 
 
 const layout = {
@@ -21,7 +21,8 @@ const tailLayout = {
 
 const SignIn: React.FC = () => {
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
+
 
   const onFinish = useCallback(async (data: Store) => {
     signIn({
@@ -45,38 +46,40 @@ const SignIn: React.FC = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          >
-          <h3>Faça seu login</h3>
+        >
+          <UserOutlined className="signIcon"/>
+          <h3>Sign In</h3>
           <Form.Item
-            label="Email"
             name="email"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input />
+            <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
 
           <Form.Item
-            label="Senha"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              Entrar
+              Login
             </Button>
           </Form.Item>
-            <Link to="/signup">
-              <Button type="primary" icon={<FiLogIn />} size='large'>
-                Criar nova conta
-              </Button>
-            </Link>
         </Form>
-
-<ImageContent />
-
+        <RegisterContent>
+          Don't have a account?
+        <Link to="/signup">
+            <FiLogIn />
+          Register Here
+        </Link>
+        </RegisterContent>
       </Content>
     </Container>
 

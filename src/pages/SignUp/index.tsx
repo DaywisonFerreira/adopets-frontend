@@ -1,8 +1,14 @@
-import React from 'react';
-import { Form, Input, Button, Tooltip } from 'antd';
-import { ValidateErrorEntity } from "rc-field-form/lib/interface";
-import {Link} from 'react-router-dom';
-import { Container, Content, ImageContent } from './styles';
+import React, { useCallback } from 'react';
+import { Form, Input, Button } from 'antd';
+import { ValidateErrorEntity, Store } from "rc-field-form/lib/interface";
+import {Link, useHistory} from 'react-router-dom';
+import {UserOutlined, MailOutlined, LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import api from '../../services/api';
+import { toast } from 'react-toastify';
+
+
+import { Container, Content } from './styles';
+
 
 const layout = {
   labelCol: { span: 8 },
@@ -13,11 +19,21 @@ const tailLayout = {
 };
 
 
-const SignUp: React.FC = () => {
+const SignIn: React.FC = () => {
 
-  function onFinish(values: object): void {
-    console.log('Success:', values);
-  }
+  const history = useHistory();
+
+  const onFinish = useCallback(async (data: Store) => {
+    try {
+      await api.post('/users', data);
+
+      toast.success('User created successfully');
+
+      history.push('/');
+    } catch (error) {
+      toast.error('Error creating user, please try again later')
+    }
+  }, [history]);
 
   function onFinishFailed(errorInfo: ValidateErrorEntity): void {
     console.log('Failed:', errorInfo);
@@ -27,46 +43,49 @@ const SignUp: React.FC = () => {
   return (
     <Container>
       <Content>
-        <ImageContent />
         <Form
           {...layout}
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          >
-          <h3>Faça seu cadastro</h3>
+        >
+          <h3>Create account</h3>
           <Form.Item
-            label="Nome"
             name="name"
-            rules={[{ required: true, message: 'Preencha seu nome' }]}
+            rules={[{ required: true, message: 'Please input your name!' }]}
           >
-            <Input />
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
           </Form.Item>
 
-
           <Form.Item
-            label="Email"
             name="email"
-            rules={[{ required: true, message: 'Preencha seu e-mail' }]}
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input />
+            <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
 
           <Form.Item
-            label="Senha"
             name="password"
-            rules={[{ required: true, message: 'Preencha sua senha' }]}
+            rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              Entrar
+              Create
             </Button>
           </Form.Item>
         </Form>
+        <Link to="/">
+        <ArrowLeftOutlined />&nbsp;
+           Back to login
+        </Link>
       </Content>
     </Container>
 
@@ -74,4 +93,4 @@ const SignUp: React.FC = () => {
 
 };
 
-export default SignUp;
+export default SignIn;
