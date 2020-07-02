@@ -24,7 +24,7 @@ const ProductCreate: React.FC = () => {
   const history = useHistory();
 
   const onFinish = useCallback(async (data: Store) => {
-    const price = data.price.replace('R$ ', '').replace(',','.');
+    const price = parseFloat(data.price.replace('R$ ', '').replace(',','.'));
     try {
       await api.post('products', {
         name: data.name,
