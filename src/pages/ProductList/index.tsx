@@ -114,6 +114,7 @@ const Product: React.FC = () => {
       try {
         await api.delete(`/product/${id}`);
 
+        setCurrentPage(1)
         loadProducts();
 
         toast.success('Product successfully deleted');
@@ -127,7 +128,6 @@ const Product: React.FC = () => {
     <Container>
     <Header/>
       <Content>
-        <h3>List Products</h3>
         <ActionsContent>
             <Search
               placeholder="Name, description or category"

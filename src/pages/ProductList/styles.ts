@@ -12,15 +12,8 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   width: 80%;
-  margin: 0 auto;
+  margin: 20px auto;
   padding-bottom: 20px;
-
-  > h3 {
-    font-size: 26px;
-    color: #919191;
-    text-align: center;
-    margin-top: 10px;
-  }
 `;
 
 export const ActionsContent = styled.div`
