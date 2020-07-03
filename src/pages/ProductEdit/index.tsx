@@ -108,7 +108,7 @@ const ProductEdit: React.FC = () => {
             name="description"
             rules={[{ required: true, message: 'Please fill a product description' }]}
           >
-            <Input.TextArea />
+            <Input.TextArea rows={4}/>
           </Form.Item>
 
           <Form.Item {...tailLayout}>
