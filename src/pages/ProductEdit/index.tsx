@@ -33,7 +33,10 @@ const ProductEdit: React.FC = () => {
   }, [id]);
 
   const onFinish = useCallback(async (data: Store) => {
-    const price = parseFloat(data.price.replace('R$ ', '').replace(',','.'));
+    const price = parseFloat(data.price.replace('R$',' ')
+                      .replace('.','')
+                      .replace(',', '.'))
+                      .toFixed(2);
     try {
       await api.put(`product/${id}`, {
         name: data.name,
